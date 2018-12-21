@@ -1,16 +1,18 @@
 package com.tmosest.androidflckr
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_search.*
+import android.util.Log
 
-class SearchActivity : AppCompatActivity() {
+private const val TAG = "SearchActivity"
+
+class SearchActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG, ".onCreate: called")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        activateToolBar(true)
+        Log.d(TAG, ".onCreate: done")
     }
 
 }

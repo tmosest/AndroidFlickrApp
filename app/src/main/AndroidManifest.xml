@@ -33,7 +33,11 @@
         <activity
                 android:name=".PhotoDetailsActivity"
                 android:label="@string/title_activity_photo_details"
+                android:parentActivityName=".MainActivity"
                 android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.tmosest.androidflckr.MainActivity"/>
         </activity>
     </application>
 

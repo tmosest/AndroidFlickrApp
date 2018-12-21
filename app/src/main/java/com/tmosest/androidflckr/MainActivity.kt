@@ -1,22 +1,20 @@
 package com.tmosest.androidflckr
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 private const val TAG = "MainActivity"
 
 class MainActivity :
-    AppCompatActivity(),
+    BaseActivity(),
     GetRawData.OnDownloadComplete,
     GetFlickrJsonData.OnDataAvailable,
     RecyclerItemClickListener.OnRecyclerClickListener {
@@ -27,7 +25,7 @@ class MainActivity :
         Log.d(TAG, "onCreate: called")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        activateToolBar(false)
 
         rcv_photos.layoutManager = LinearLayoutManager(this)
         rcv_photos.addOnItemTouchListener(RecyclerItemClickListener(this, rcv_photos, this))
@@ -97,5 +95,11 @@ class MainActivity :
     override fun onItemLongClick(view: View, position: Int) {
         Log.d(TAG, "onItemLongClick: starts")
         Toast.makeText(this, "Long tap at position $position", Toast.LENGTH_SHORT).show()
+        val photo = flickrRecyclerViewAdapter.getPhoto(position)
+        if (photo != null) {
+            val intent = Intent(this, PhotoDetailsActivity::class.java)
+            intent.putExtra(PHOTO_TRASFER, photo)
+            startActivity(intent)
+        }
     }
 }
