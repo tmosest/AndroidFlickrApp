@@ -3,6 +3,7 @@ package com.tmosest.androidflckr
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
@@ -21,6 +22,12 @@ class MainActivity :
 
     private val flickrRecyclerViewAdapter = FlickrRecyclerViewAdapter(ArrayList())
 
+    private fun getData(tags : String = "android,oreo") {
+        val url = createUrl(searchCriteria = tags)
+        val getRawData = GetRawData(this)
+        getRawData.execute(url)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate: called")
         super.onCreate(savedInstanceState)
@@ -31,10 +38,24 @@ class MainActivity :
         rcv_photos.addOnItemTouchListener(RecyclerItemClickListener(this, rcv_photos, this))
         rcv_photos.adapter = flickrRecyclerViewAdapter
 
-        val url = createUrl()
-        val getRawData = GetRawData(this)
-        getRawData.execute(url)
+        getData()
+
         Log.d(TAG, "onCreate: ends")
+    }
+
+    override fun onResume() {
+        Log.d(TAG, "onResume: starts")
+        super.onResume()
+
+        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val queryResult = sharedPrefs.getString(FLICKER_QUERY, "")
+        Log.d(TAG, "onResume: queryResult $queryResult")
+
+        if (queryResult != null && queryResult.isNotEmpty()) {
+            getData(queryResult)
+        }
+
+        Log.d(TAG, "onResume: ends")
     }
 
     private fun createUrl(searchCriteria: String = "oreo,android", lang: String = "en-us", matchAll: Boolean = true) : String {
@@ -63,7 +84,10 @@ class MainActivity :
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_search -> {
+                startActivity(Intent(this, SearchActivity::class.java))
+                return true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -98,7 +122,7 @@ class MainActivity :
         val photo = flickrRecyclerViewAdapter.getPhoto(position)
         if (photo != null) {
             val intent = Intent(this, PhotoDetailsActivity::class.java)
-            intent.putExtra(PHOTO_TRASFER, photo)
+            intent.putExtra(PHOTO_TRANSFER, photo)
             startActivity(intent)
         }
     }

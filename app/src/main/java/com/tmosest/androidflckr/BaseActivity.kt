@@ -7,7 +7,7 @@ import android.util.Log
 
 private const val TAG = "BaseActivity"
 internal const val FLICKER_QUERY = "FLICKER_QUERY"
-internal const val PHOTO_TRASFER = "PHOTO_TRASFER"
+internal const val PHOTO_TRANSFER = "PHOTO_TRANSFER"
 
 @SuppressLint("Registered")
 open class BaseActivity : AppCompatActivity() {
