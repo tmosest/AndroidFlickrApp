@@ -1,5 +1,6 @@
 package com.tmosest.androidflckr
 
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log
@@ -18,9 +19,23 @@ class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete, GetFlic
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        val url = createUrl()
         val getRawData = GetRawData(this)
-        getRawData.execute("http://api.flickr.com/services/feeds/photos_public.gne?format=json&tagmode=any&tags=android&nojsoncallback=1")
+        getRawData.execute(url)
         Log.d(TAG, "onCreate: ends")
+    }
+
+    private fun createUrl(searchCriteria: String = "oreo,android", lang: String = "en-us", matchAll: Boolean = true) : String {
+        // "http://api.flickr.com/services/feeds/photos_public.gne?format=json&tagmode=any&tags=android&nojsoncallback=1"
+        return Uri.parse("http://api.flickr.com/services/feeds/photos_public.gne")
+        .buildUpon()
+        .appendQueryParameter("tags", searchCriteria)
+        .appendQueryParameter("tagmode", if (matchAll) "ALL" else "ANY")
+        .appendQueryParameter("lang", lang)
+        .appendQueryParameter("format", "json")
+        .appendQueryParameter("nojsoncallback", "1")
+        .build()
+        .toString()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
