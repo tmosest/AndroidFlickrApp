@@ -3,21 +3,28 @@ package com.tmosest.androidflckr
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 
 private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete, GetFlickrJsonData.OnDataAvailable {
+
+    private val flickrRecyclerViewAdapter = FlickrRecyclerViewAdapter(ArrayList())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate: called")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+        rcv_photos.layoutManager = LinearLayoutManager(this)
+        rcv_photos.adapter = flickrRecyclerViewAdapter
 
         val url = createUrl()
         val getRawData = GetRawData(this)
@@ -68,7 +75,7 @@ class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete, GetFlic
 
     override fun onDataAvailable(data: List<Photo>) {
         Log.d(TAG, "onDataAvailable: called, data is $data")
-
+        flickrRecyclerViewAdapter.loadNewData(data)
         Log.d(TAG, "onDataAvailable: ends")
     }
 
