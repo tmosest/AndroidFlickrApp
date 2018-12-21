@@ -46,6 +46,10 @@ class SearchActivity : BaseActivity() {
                 return false
             }
         })
+        searchView?.setOnCloseListener {
+            finish()
+            false
+        }
         return true
     }
 }

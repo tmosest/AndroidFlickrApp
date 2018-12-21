@@ -26,11 +26,17 @@ class FlickrRecyclerViewAdapter(private var photoList: List<Photo>) : RecyclerVi
     }
 
     override fun getItemCount(): Int {
-        return photoList.size
+        return if (photoList.isEmpty()) 1 else photoList.size
     }
 
     override fun onBindViewHolder(viewHolder: FlickrImageViewHolder, index: Int) {
         // Called by the layout manager when it wants new data in an existing view
+        if (photoList.isEmpty()) {
+            viewHolder.thumbnail.setImageResource(R.drawable.baseline_image_black_48)
+            viewHolder.title.setText(R.string.empty_photo)
+            return
+        }
+
         val photoItem = photoList[index]
 
         Picasso.get()
