@@ -16,9 +16,9 @@ class PhotoDetailsActivity : BaseActivity() {
         activateToolBar(true)
 
         val photo =  intent.getParcelableExtra<Photo>(PHOTO_TRASFER)
-        tv_author.text = photo.author
-        tv_title.text = photo.title
-        tv_tags.text = photo.tags
+        tv_author.text = resources.getString(R.string.photo_author_text, "Author:", photo.author)
+        tv_title.text = resources.getString(R.string.photo_title_text, photo.title)
+        tv_tags.text = resources.getString(R.string.photo_tags_text, photo.tags)
 
         Picasso.get()
             .load(photo.link)
