@@ -32,8 +32,6 @@ class FlickrRecyclerViewAdapter(private var photoList: List<Photo>) : RecyclerVi
     override fun onBindViewHolder(viewHolder: FlickrImageViewHolder, index: Int) {
         // Called by the layout manager when it wants new data in an existing view
         val photoItem = photoList[index]
-        Log.d(TAG, "onBindViewHolder: ${photoItem.title} --> $index")
-
 
         Picasso.get()
             .load(photoItem.image)
